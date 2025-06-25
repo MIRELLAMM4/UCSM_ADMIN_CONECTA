@@ -2,6 +2,7 @@ package com.example.admineventoscatolica.services
 
 import com.example.admineventoscatolica.model.Events
 import com.example.admineventoscatolica.model.Conference
+import com.example.admineventoscatolica.model.Notice
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 
@@ -47,12 +48,11 @@ fun updateConference(conference: Conference) {
 fun deleteConference(conferenceId: String) {
     ConnectFirebase().child("conferencias").child(conferenceId).removeValue()
 }
-// ==================== NOTICIAS ====================
+//// ----------------------------- NOTICIAS -----------------------------
 fun addNotice(notice: Notice) {
     val db = ConnectFirebase().child("noticias")
     val key = db.push().key ?: return
-    val newNotice = notice.copy(noticeid = key)
-    db.child(key).setValue(newNotice)
+    db.child(key).setValue(notice.copy(noticeid = key))
 }
 
 fun updateNotice(notice: Notice) {

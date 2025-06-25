@@ -22,6 +22,7 @@ import com.example.admineventoscatolica.components.Header
 import com.example.admineventoscatolica.components.NavBottom
 import com.example.admineventoscatolica.model.Conference
 import com.example.admineventoscatolica.model.Events
+import com.example.admineventoscatolica.model.Notice
 import com.example.admineventoscatolica.navigation.AppNavGraph
 import com.example.admineventoscatolica.states.NavItem
 import com.example.admineventoscatolica.ui.theme.EventosCatolicaTheme
@@ -93,6 +94,13 @@ fun AppMain(navController: NavController) {
                             ?.savedStateHandle
                             ?.remove<Conference>("conferenceToEdit")
                         navController.navigate("conference_form")
+                    }
+
+                    NavItem.NOTICIAS -> {
+                        navController.currentBackStackEntry
+                            ?.savedStateHandle
+                            ?.remove<Notice>("noticeToEdit")
+                        navController.navigate("notice_form")
                     }
 
                     else -> Unit

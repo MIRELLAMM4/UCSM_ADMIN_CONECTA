@@ -1,34 +1,30 @@
-
 package com.example.admineventoscatolica.screens
 
 import android.widget.Toast
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
 import com.example.admineventoscatolica.model.Notice
 import com.example.admineventoscatolica.services.addNotice
 import com.example.admineventoscatolica.services.updateNotice
-import com.example.admineventoscatolica.states.NavItem
-import com.example.admineventoscatolica.ui.theme.VerdeSecundario
+import androidx.navigation.NavController
 
 @Composable
 fun NoticeFormScreen(
-    navController: NavController,
+    navController: NavController,  // Asegúrate de que navController esté aquí
     existingNotice: Notice? = null,
-            onNoticeSaved: () -> Unit
+    onNoticeSaved: () -> Unit
 ) {
     val context = LocalContext.current
 
     var title by remember { mutableStateOf(existingNotice?.title ?: "") }
     var description by remember { mutableStateOf(existingNotice?.description ?: "") }
     var date by remember { mutableStateOf(existingNotice?.date ?: "") }
+    var imageUrl by remember { mutableStateOf(existingNotice?.image ?: "") }
 
     Column(
         modifier = Modifier
@@ -39,9 +35,10 @@ fun NoticeFormScreen(
         OutlinedTextField(
             value = title,
             onValueChange = { title = it },
-            label = { Text("Título") },
+            label = { Text("Título de la noticia") },
             modifier = Modifier.fillMaxWidth()
         )
+
         Spacer(modifier = Modifier.height(8.dp))
 
         OutlinedTextField(
@@ -50,6 +47,7 @@ fun NoticeFormScreen(
             label = { Text("Descripción") },
             modifier = Modifier.fillMaxWidth()
         )
+
         Spacer(modifier = Modifier.height(8.dp))
 
         OutlinedTextField(
@@ -58,29 +56,39 @@ fun NoticeFormScreen(
             label = { Text("Fecha") },
             modifier = Modifier.fillMaxWidth()
         )
+
+        Spacer(modifier = Modifier.height(8.dp))
+
+        OutlinedTextField(
+            value = imageUrl,
+            onValueChange = { imageUrl = it },
+            label = { Text("URL de la imagen") },
+            modifier = Modifier.fillMaxWidth()
+        )
+
         Spacer(modifier = Modifier.height(16.dp))
 
         Button(
             onClick = {
-                val notice = Notice(
+                val newNotice = Notice(
                     noticeid = existingNotice?.noticeid,
                     title = title,
                     description = description,
                     date = date,
-                    image = null, // Si luego se agrega imagen, se reemplaza aquí
+                    image = imageUrl,
                     isUpcoming = true
                 )
-                if (notice.noticeid == null) {
-                    addNotice(notice)
+
+                if (existingNotice == null) {
+                    addNotice(newNotice)
                     Toast.makeText(context, "Noticia creada", Toast.LENGTH_SHORT).show()
                 } else {
-                    updateNotice(notice)
+                    updateNotice(newNotice)
                     Toast.makeText(context, "Noticia actualizada", Toast.LENGTH_SHORT).show()
                 }
-                navController.currentBackStackEntry?.savedStateHandle?.set("selectedNavItem", NavItem.NOTICIAS)
-                navController.popBackStack()
+
+                onNoticeSaved()
             },
-            colors = ButtonDefaults.buttonColors(containerColor = VerdeSecundario),
             modifier = Modifier.align(Alignment.End)
         ) {
             Text(if (existingNotice == null) "Crear" else "Actualizar")

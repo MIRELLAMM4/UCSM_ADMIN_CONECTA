@@ -24,7 +24,6 @@ import com.example.admineventoscatolica.states.NavItem
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
-import com.google.firebase.storage.FirebaseStorage
 import java.util.*
 
 @Composable
@@ -129,17 +128,18 @@ private fun EventBody(context: Context, navController: NavController) {
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
 private fun NoticeBody(context: Context, navController: NavController) {
+    // Utilizamos remember y mutableStateListOf para almacenar el estado de las noticias
     val noticias = remember { mutableStateListOf<Notice>() }
 
     LaunchedEffect(Unit) {
         val ref = ConnectFirebase().child("noticias")
         ref.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                noticias.clear()
+                noticias.clear() // Limpiar la lista antes de agregar nuevos elementos
                 snapshot.children.forEach { child ->
                     val noticia = child.getValue(Notice::class.java)
                     noticia?.let {
-                        noticias.add(it.copy(noticeid = child.key))
+                        noticias.add(it.copy(noticeid = child.key)) // Agregar la noticia a la lista
                     }
                 }
             }
@@ -155,7 +155,7 @@ private fun NoticeBody(context: Context, navController: NavController) {
         if (noticias.isEmpty()) {
             Text("No hay noticias disponibles", modifier = Modifier.padding(16.dp))
         } else {
-            noticias.filter { it.isUpcoming }.forEach { notice ->
+            noticias.forEach { notice ->
                 Column(modifier = Modifier.fillMaxWidth()) {
                     if (!notice.image.isNullOrBlank()) {
                         GlideImage(
@@ -173,3 +173,5 @@ private fun NoticeBody(context: Context, navController: NavController) {
         }
     }
 }
+
+

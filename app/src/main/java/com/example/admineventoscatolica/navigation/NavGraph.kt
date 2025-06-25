@@ -15,9 +15,9 @@ import com.example.admineventoscatolica.states.NavItem
 
 @Composable
 fun AppNavGraph(navController: NavHostController) {
-    NavHost(navController, startDestination = "home") {
+    NavHost(navController = navController, startDestination = "home") {
         composable("home") {
-            AppMain(navController)
+            AppMain(navController = navController) // Asegúrate de pasar navController aquí
         }
         composable("event_form") {
             val eventToEdit = navController
@@ -52,7 +52,9 @@ fun AppNavGraph(navController: NavHostController) {
                 ?.savedStateHandle
                 ?.get<Notice>("noticeToEdit")
 
+            // Asegúrate de pasar el navController aquí
             NoticeFormScreen(
+                navController = navController,  // Pasa el navController
                 existingNotice = noticeToEdit,
                 onNoticeSaved = {
                     navController.popBackStack()
@@ -64,4 +66,3 @@ fun AppNavGraph(navController: NavHostController) {
         }
     }
 }
-

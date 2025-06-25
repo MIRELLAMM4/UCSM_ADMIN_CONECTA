@@ -21,13 +21,14 @@ import com.example.admineventoscatolica.services.deleteNotice
 import com.example.admineventoscatolica.ui.theme.LightGrayDefault
 import com.example.admineventoscatolica.ui.theme.Plomo
 import com.example.admineventoscatolica.ui.theme.Rojo
+import com.example.admineventoscatolica.ui.theme.VerdeSecundario
 
 @Composable
 fun NoticeCard(notice: Notice, navController: NavController) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .height(180.dp)
+            .height(160.dp)
             .background(color = Color.White, shape = RoundedCornerShape(8.dp))
             .border(
                 width = 0.5.dp,
@@ -36,63 +37,83 @@ fun NoticeCard(notice: Notice, navController: NavController) {
             ),
         elevation = CardDefaults.cardElevation(4.dp)
     ) {
-        Column(
+        Row(
             modifier = Modifier
                 .background(Color.White)
                 .padding(10.dp)
-                .fillMaxSize(),
-            verticalArrangement = Arrangement.SpaceBetween
+                .fillMaxWidth()
+                .fillMaxHeight(),
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            Text(
-                text = notice.date ?: "Fecha no disponible",
-                fontSize = 12.sp,
-                color = Color.Gray
-            )
-
-            Text(
-                text = notice.title ?: "Título no disponible",
-                fontSize = 18.sp,
-                fontWeight = FontWeight.SemiBold,
-                fontFamily = FontFamily(Font(R.font.philosopher_regular)),
-                modifier = Modifier.padding(vertical = 4.dp)
-            )
-
-            Text(
-                text = notice.description ?: "Descripción no disponible",
-                fontSize = 14.sp,
-                color = Color.DarkGray,
-                maxLines = 3
-            )
-
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceEvenly
+            // Columna para la fecha de la noticia
+            Column(
+                modifier = Modifier.fillMaxHeight(),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
             ) {
+                Text(text = notice.date ?: "00/00/000", fontSize = 12.sp, color = Color.Gray)
+            }
+
+            Spacer(Modifier.width(10.dp)) // Espacio horizontal entre las columnas
+
+            // Columna para el contenido de la noticia
+            Column(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
+            ) {
+                Text(
+                    text = notice.title ?: "Título no disponible",
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.SemiBold,
+                    fontFamily = FontFamily(Font(R.font.philosopher_regular))
+                )
+                Spacer(Modifier.height(8.dp))
+
+
                 Button(
-                    onClick = {
-                        navController.currentBackStackEntry
-                            ?.savedStateHandle
-                            ?.set("noticeToEdit", notice)
-                        navController.navigate("notice_form")
-                    },
+                    onClick = { /* Acción para ver la noticia */ },
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = Plomo,
+                        containerColor = VerdeSecundario,
                         contentColor = Color.White
                     )
                 ) {
-                    Text("Editar")
+                    Text("Ver")
                 }
 
-                Button(
-                    onClick = {
-                        notice.noticeid?.let { deleteNotice(it) }
-                    },
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = Rojo,
-                        contentColor = Color.White
-                    )
+                Spacer(Modifier.height(8.dp))
+
+                // Botones Editar y Eliminar
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceEvenly
                 ) {
-                    Text("Eliminar")
+                    Button(
+                        onClick = {
+                            navController.currentBackStackEntry
+                                ?.savedStateHandle
+                                ?.set("noticeToEdit", notice)
+                            navController.navigate("notice_form")
+                        },
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = Plomo,
+                            contentColor = Color.White
+                        )
+                    ) {
+                        Text("Editar")
+                    }
+
+                    Button(
+                        onClick = {
+                            notice.noticeid?.let { deleteNotice(it) }
+                        },
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = Rojo,
+                            contentColor = Color.White
+                        )
+                    ) {
+                        Text("Eliminar")
+                    }
                 }
             }
         }
