@@ -12,6 +12,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
@@ -30,7 +31,7 @@ fun CardInfo(event: Events, navController: NavController) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .height(160.dp)
+            .height(170.dp)
             .background(color = Color.White, shape = RoundedCornerShape(8.dp))
             .border(
                 width = 0.5.dp,
@@ -67,7 +68,9 @@ fun CardInfo(event: Events, navController: NavController) {
                     text = event.title ?: "Título no disponible",
                     fontSize = 16.sp,
                     fontWeight = FontWeight.SemiBold,
-                    fontFamily = FontFamily(Font(R.font.philosopher_regular))
+                    fontFamily = FontFamily(Font(R.font.philosopher_regular)),
+                    maxLines = 2,
+                    overflow = TextOverflow.Ellipsis
                 )
                 Spacer(Modifier.height(8.dp))
 
@@ -75,7 +78,9 @@ fun CardInfo(event: Events, navController: NavController) {
                 Spacer(Modifier.height(8.dp))
 
                 Row(
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .weight(1f, fill = false),
                     horizontalArrangement = Arrangement.SpaceEvenly
                 ) {
                     // Botón Editar

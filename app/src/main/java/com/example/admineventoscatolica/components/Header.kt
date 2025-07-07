@@ -22,12 +22,20 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.admineventoscatolica.R
+import com.example.admineventoscatolica.states.NavItem
 
 @Composable
-fun Header() {
+fun Header(selectedItem: NavItem) {
+    val headerText = when (selectedItem) {
+        NavItem.EVENTOS -> "Explora los diferentes Eventos"
+        NavItem.CONFERENCIAS -> "Explora las diferentes Conferencias"
+        NavItem.NOTICIAS -> "Explora las diferentes Noticias"
+        else -> "Explora el contenido"
+    }
     Box(
         modifier = Modifier
             .fillMaxWidth(),
@@ -59,13 +67,13 @@ fun Header() {
                     painter = painterResource(R.mipmap.ucsm_image_logo),
                     contentDescription = "Logo",
                     modifier = Modifier
-                        .height(80.dp),
+                        .height(60.dp),
                     alignment = Alignment.Center,
                     contentScale = ContentScale.Crop
                 )
 
                 Text(
-                    text = "Explora los diferentes Conferencias",
+                    text = headerText,
                     color = Color.White,
                     textAlign = TextAlign.Center,
                     style = TextStyle(

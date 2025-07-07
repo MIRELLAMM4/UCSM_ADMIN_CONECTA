@@ -69,7 +69,7 @@ fun AppMain(navController: NavController) {
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
-        topBar = { Header() },
+        topBar = { Header(selectedItem) },
         bottomBar = {
             NavBottom(
                 context = context,
