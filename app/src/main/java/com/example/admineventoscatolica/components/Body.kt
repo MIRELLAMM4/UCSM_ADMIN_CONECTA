@@ -125,7 +125,6 @@ private fun EventBody(context: Context, navController: NavController) {
     }
 }
 
-@OptIn(ExperimentalGlideComposeApi::class)
 @Composable
 private fun NoticeBody(context: Context, navController: NavController) {
     // Utilizamos remember y mutableStateListOf para almacenar el estado de las noticias
@@ -157,15 +156,6 @@ private fun NoticeBody(context: Context, navController: NavController) {
         } else {
             noticias.forEach { notice ->
                 Column(modifier = Modifier.fillMaxWidth()) {
-                    if (!notice.image.isNullOrBlank()) {
-                        GlideImage(
-                            model = notice.image,
-                            contentDescription = "Imagen de la noticia",
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .height(180.dp)
-                        )
-                    }
                     NoticeCard(notice = notice, navController = navController)
                     Spacer(modifier = Modifier.height(12.dp))
                 }

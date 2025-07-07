@@ -12,9 +12,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
+import com.bumptech.glide.integration.compose.GlideImage
 import com.example.admineventoscatolica.R
 import com.example.admineventoscatolica.model.Notice
 import com.example.admineventoscatolica.services.deleteNotice
@@ -23,12 +26,13 @@ import com.example.admineventoscatolica.ui.theme.Plomo
 import com.example.admineventoscatolica.ui.theme.Rojo
 import com.example.admineventoscatolica.ui.theme.VerdeSecundario
 
+@OptIn(ExperimentalGlideComposeApi::class)
 @Composable
 fun NoticeCard(notice: Notice, navController: NavController) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .height(160.dp)
+            .height(180.dp)
             .background(color = Color.White, shape = RoundedCornerShape(8.dp))
             .border(
                 width = 0.5.dp,
@@ -40,25 +44,43 @@ fun NoticeCard(notice: Notice, navController: NavController) {
         Row(
             modifier = Modifier
                 .background(Color.White)
-                .padding(10.dp)
-                .fillMaxWidth()
-                .fillMaxHeight(),
+                .fillMaxSize()
+                .padding(10.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             // Columna para la fecha de la noticia
             Column(
-                modifier = Modifier.fillMaxHeight(),
+                modifier = Modifier
+                    .weight(0.3f)
+                    .fillMaxHeight(),
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center
             ) {
-                Text(text = notice.date ?: "00/00/000", fontSize = 12.sp, color = Color.Gray)
+                GlideImage(
+                    model = notice.image,
+                    contentDescription = "Imagen de la noticia",
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(80.dp)
+                ) { requestBuilder ->
+                    requestBuilder
+                        .placeholder(R.mipmap.no_image_logo)
+                        .error(R.mipmap.error_image_logo)
+                }
+                Text(
+                    text = notice.date ?: "00/00/000",
+                    fontSize = 12.sp,
+                    color = Color.Gray,
+                )
             }
 
             Spacer(Modifier.width(10.dp)) // Espacio horizontal entre las columnas
 
             // Columna para el contenido de la noticia
             Column(
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier
+                    .weight(0.7f)
+                    .fillMaxWidth(),
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center
             ) {
@@ -66,7 +88,10 @@ fun NoticeCard(notice: Notice, navController: NavController) {
                     text = notice.title ?: "Título no disponible",
                     fontSize = 16.sp,
                     fontWeight = FontWeight.SemiBold,
-                    fontFamily = FontFamily(Font(R.font.philosopher_regular))
+                    fontFamily = FontFamily(Font(R.font.philosopher_regular)),
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                    modifier = Modifier.fillMaxWidth()
                 )
                 Spacer(Modifier.height(8.dp))
 
@@ -76,17 +101,17 @@ fun NoticeCard(notice: Notice, navController: NavController) {
                     colors = ButtonDefaults.buttonColors(
                         containerColor = VerdeSecundario,
                         contentColor = Color.White
-                    )
+                    ),
+                    modifier = Modifier.fillMaxWidth()
                 ) {
                     Text("Ver")
                 }
 
-                Spacer(Modifier.height(8.dp))
-
                 // Botones Editar y Eliminar
                 Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceEvenly
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceEvenly,
                 ) {
                     Button(
                         onClick = {
@@ -98,7 +123,8 @@ fun NoticeCard(notice: Notice, navController: NavController) {
                         colors = ButtonDefaults.buttonColors(
                             containerColor = Plomo,
                             contentColor = Color.White
-                        )
+                        ),
+                        modifier = Modifier.weight(1f)
                     ) {
                         Text("Editar")
                     }
@@ -110,9 +136,14 @@ fun NoticeCard(notice: Notice, navController: NavController) {
                         colors = ButtonDefaults.buttonColors(
                             containerColor = Rojo,
                             contentColor = Color.White
-                        )
+                        ),
+                        modifier = Modifier.weight(1f)
                     ) {
-                        Text("Eliminar")
+                        Text(
+                            text = "Eliminar",
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis
+                        )
                     }
                 }
             }
