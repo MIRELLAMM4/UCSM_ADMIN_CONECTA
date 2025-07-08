@@ -12,7 +12,7 @@ android {
 
     defaultConfig {
         applicationId = "com.example.admineventoscatolica"
-        minSdk = 21
+        minSdk = 23
         targetSdk = 35
         versionCode = 1
         versionName = "1.0"
@@ -54,6 +54,7 @@ dependencies {
     implementation(libs.firebase.database)
 
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
+    implementation(libs.firebase.auth)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

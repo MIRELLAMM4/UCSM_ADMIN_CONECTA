@@ -17,3 +17,7 @@ val VerdeSecundario = Color(0xFF42BD7A)
 val LightGrayDefault = Color(0xFFE8E8E8)
 val Plomo = Color(0x75000000)
 val Rojo = Color(0xEDFF5486)
+
+val PrimaryColor = Color(0xFF3EC4AB) // Azul primario
+val SecondaryColor = Color(0xFF92F0EA) // Gris oscuro secundario
+val ErrorColor = Color(0xFFF44336) // Rojo de error
